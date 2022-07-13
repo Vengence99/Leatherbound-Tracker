@@ -1,0 +1,28 @@
+import time
+import requests
+from bs4 import BeautifulSoup
+
+url = "https://www.dragonsteelbooks.com/collections/leatherbound-books"
+
+def check_articles(url):
+    page = requests.get(url)
+    if page.status_code != 200:
+        raise ValueError
+    soup = BeautifulSoup(page.content, 'html.parser')
+    products = soup.find_all("div", {"class": "product__details"})
+
+    for i in range(products.__len__()):
+        title_obj = products[i].findChild("h3")
+        book_title = title_obj.text
+        isSoldOut = products[i].findChild("span", {"class":"product__price-price"})
+        isSO_bool = isSoldOut.text == "Sold Out"
+
+        if isSO_bool:
+            print ("XXX {} is still Sold Out...".format(book_title))
+        else:
+            print("!!! {} is available, RUN!".format(book_title.upper()))
+
+
+while True:
+    check_articles(url)
+    time.sleep(3600) # One Hr Sleep Time
