@@ -1,28 +1,79 @@
+import io
+import pytesseract    
 import time
 import requests
 from bs4 import BeautifulSoup
+from PIL import Image
 
 url = "https://www.dragonsteelbooks.com/collections/leatherbound-books"
 
+
+value = ""
+SignedYN = ""
+go = True
+
+
 def check_articles(url):
+    
+
     page = requests.get(url)
+    
+
+    # Makes sure that the page will load before extracting HTML from the webpage
     if page.status_code != 200:
         raise ValueError
-    soup = BeautifulSoup(page.content, 'html.parser')
-    products = soup.find_all("div", {"class": "product__details"})
+    soup = BeautifulSoup(page.content, 'html.parser') # Parses through html
+    products = soup.find_all("div", {"class": "product__details"}) # Retrieves the product detail section of the html code
+    Pics = soup.find_all("div", {"class": "o-ratio__content"}) # Retrieves the photo data of the HTML code (Used to determine SIGNED vs UNSIGNED)
 
+
+    # Iterates through the html of products to retrieve information
     for i in range(products.__len__()):
+        
+
+        # Retrieves the Book Title
         title_obj = products[i].findChild("h3")
         book_title = title_obj.text
+        
+
+        # Retrieves Availability.   
         isSoldOut = products[i].findChild("span", {"class":"product__price-price"})
         isSO_bool = isSoldOut.text == "Sold Out"
+        
+       
+       # Checks whether copies are SIGNED or UNSIGNED
+        Text = Pics[i].findChild("img", {"class":"product__img"})
+        
+               
+        if "UNSIGNED" in str(Text):    
+            SignedYN = "UNSIGNED"
+        else: 
+            SignedYN = "SIGNED"
 
+        # Determines output of Soldout vs Available. Also informs if copy is SIGNED vs UNSIGNED
         if isSO_bool:
-            print ("XXX {} is still Sold Out...".format(book_title))
+            print( "A(n) {}".format(SignedYN), "copy of {} is still Sold Out...".format(book_title))
         else:
-            print("!!! {} is available, RUN!".format(book_title.upper()))
+            print("A(n) {}".format(SignedYN), "copy of {} is available, RUN!".format(book_title))
+            
+
+# Runs initially to determine whether you only want to run the program once or hourly
+RunTime = input("Run how many times? (Once/Hrly): ")
 
 
-while True:
+# Determines if program is run once or hourly depending on input.
+if RunTime == "Once":
     check_articles(url)
-    time.sleep(3600) # One Hr Sleep Time
+elif RunTime == "Hrly":
+    while go == True:
+        check_articles(url)
+        # Runs to see if you want to stop the code before continuing
+        if input("Stop? (Y/N): ") == "Y":
+            go = False
+            break
+            # Stops running if input is anything other than Y
+        else:
+            continue
+
+        # If no, then it continues.
+        time.sleep(3600) # One Hr Sleep Time
