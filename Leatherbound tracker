@@ -1,7 +1,6 @@
 import time
 import requests
 from bs4 import BeautifulSoup
-from PIL import Image
 
 url = "https://www.dragonsteelbooks.com/collections/leatherbound-books"
 
