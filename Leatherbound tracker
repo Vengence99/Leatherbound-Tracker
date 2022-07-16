@@ -1,6 +1,9 @@
 import time
+import tkinter as tk
 import requests
+from tkinter import simpledialog
 from bs4 import BeautifulSoup
+from sympy import root
 
 url = "https://www.dragonsteelbooks.com/collections/leatherbound-books"
 
@@ -54,23 +57,39 @@ def check_articles(url):
             print("A(n) {}".format(SignedYN), "copy of {} is available, RUN!".format(book_title))
             
 
-# Runs initially to determine whether you only want to run the program once or hourly
-RunTime = input("Run how many times? (Once/Hrly): ")
+# Runs initially to determine whether you only want to run the program once or hourly via popup prompt
+ROOT = tk.Tk()
+ROOT.withdraw()
+RunTime = simpledialog.askstring(title = "Runtime calculation",
+                                           prompt = "Run how many times? (Once/Hrly)" )
 
 
 # Determines if program is run once or hourly depending on input.
 if RunTime == "Once":
+
     check_articles(url)
+
 elif RunTime == "Hrly":
+
     while go == True:
+
         check_articles(url)
+
+        ROOT = tk.Tk()
+        ROOT.withdraw()
+        stopq = simpledialog.askstring(title = "Stop Code?", prompt = "Stop? (Y/N)")
+
         # Runs to see if you want to stop the code before continuing
-        if input("Stop? (Y/N): ") == "Y":
+        if stopq == "Y":
+            
             go = False
             break
             # Stops running if input is anything other than Y
+        
         else:
+            
             continue
 
         # If no, then it continues.
         time.sleep(3600) # One Hr Sleep Time
+
