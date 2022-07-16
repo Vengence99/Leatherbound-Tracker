@@ -3,7 +3,7 @@ import tkinter as tk
 import requests
 from tkinter import simpledialog
 from bs4 import BeautifulSoup
-from sympy import root
+
 
 url = "https://www.dragonsteelbooks.com/collections/leatherbound-books"
 
