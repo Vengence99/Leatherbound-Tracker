@@ -52,16 +52,15 @@ def check_articles(url):
 
         # Determines output of Soldout vs Available. Also informs if copy is SIGNED vs UNSIGNED
         if isSO_bool:
-            print( "A(n) {}".format(SignedYN), "copy of {} is still Sold Out...".format(book_title))
+            print( "A(n) {}".format(SignedYN), "copy of {} is still SOLD OUT...".format(book_title))
         else:
-            print("A(n) {}".format(SignedYN), "copy of {} is available, RUN!".format(book_title))
+            print("A(n) {}".format(SignedYN), "copy of {} is AVAILABLE, RUN!".format(book_title))
             
 
 # Runs initially to determine whether you only want to run the program once or hourly via popup prompt
 ROOT = tk.Tk()
 ROOT.withdraw()
-RunTime = simpledialog.askstring(title = "Runtime calculation",
-                                           prompt = "Run how many times? (Once/Hrly)" )
+RunTime = simpledialog.askstring(title = "Runtime calculation", prompt = "Run how many times? (Once/Hrly)" )
 
 
 # Determines if program is run once or hourly depending on input.
@@ -88,8 +87,7 @@ elif RunTime == "Hrly":
         
         else:
             
+            # If no, then it continues.
+            time.sleep(3600) # One Hr Sleep Time
+            
             continue
-
-        # If no, then it continues.
-        time.sleep(3600) # One Hr Sleep Time
-
