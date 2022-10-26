@@ -24,8 +24,7 @@ def check_articles(url):
     if page.status_code != 200:
         raise ValueError
     soup = BeautifulSoup(page.content, 'html.parser') # Parses through html
-    #products = soup.find_all("div", {"class": "collection-main"}) # Retrieves the product detail section of the html code
-    counter = soup.find_all("div", {"class": "o-layout__item u-1/1 u-1/2@phab u-1/3@tab"})
+    counter = soup.find_all("div", {"class": "o-layout__item u-1/1 u-1/2@phab u-1/3@tab"}) #Provides the length counter as well as Sold Out information
     Pics = soup.find_all("div", {"class": "o-ratio__content"}) # Retrieves the photo data of the HTML code (Used to determine SIGNED vs UNSIGNED)
 
     print("counter: ", len(counter))
