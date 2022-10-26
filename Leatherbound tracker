@@ -27,7 +27,6 @@ def check_articles(url):
     counter = soup.find_all("div", {"class": "o-layout__item u-1/1 u-1/2@phab u-1/3@tab"}) #Provides the length counter as well as Sold Out information
     Pics = soup.find_all("div", {"class": "o-ratio__content"}) # Retrieves the photo data of the HTML code (Used to determine SIGNED vs UNSIGNED)
 
-    print("counter: ", len(counter))
 
     # Iterates through the html of products to retrieve information
     for i in range(len(counter)):
@@ -69,9 +68,7 @@ def check_articles(url):
                 print("A(n) SIGNED copy of {} is AVAILABLE, RUN!".format(book_title))
             
 
-check_articles(url)
-
-""" # Runs initially to determine whether you only want to run the program once or hourly via popup prompt
+# Runs initially to determine whether you only want to run the program once or hourly via popup prompt
 ROOT = tk.Tk()
 ROOT.withdraw()
 RunTime = simpledialog.askstring(title = "Runtime calculation", prompt = "Run how many times? (Once/Hrly)" )
@@ -104,4 +101,4 @@ elif RunTime == "Hrly":
             # If no, then it continues.
             time.sleep(3600) # One Hr Sleep Time
             
-            continue """
+            continue
