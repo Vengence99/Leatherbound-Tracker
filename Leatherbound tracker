@@ -1,3 +1,4 @@
+from math import prod
 import time
 import tkinter as tk
 import requests
@@ -24,41 +25,55 @@ def check_articles(url):
     if page.status_code != 200:
         raise ValueError
     soup = BeautifulSoup(page.content, 'html.parser') # Parses through html
-    products = soup.find_all("div", {"class": "product__details"}) # Retrieves the product detail section of the html code
+    #products = soup.find_all("div", {"class": "collection-main"}) # Retrieves the product detail section of the html code
+    counter = soup.find_all("div", {"class": "o-layout__item u-1/1 u-1/2@phab u-1/3@tab"})
     Pics = soup.find_all("div", {"class": "o-ratio__content"}) # Retrieves the photo data of the HTML code (Used to determine SIGNED vs UNSIGNED)
 
+    print("counter: ", len(counter))
 
     # Iterates through the html of products to retrieve information
-    for i in range(products.__len__()):
-        
+    for i in range(len(counter)):
+
 
         # Retrieves the Book Title
-        title_obj = products[i].findChild("h3")
+        title_obj = soup.find_all("h2", {"class": "product-card__title f-family--heading f-caps--true f-space--1"})[i]
+      
         book_title = title_obj.text
         
 
         # Retrieves Availability.   
-        isSoldOut = products[i].findChild("span", {"class":"product__price-price"})
-        isSO_bool = isSoldOut.text == "Sold Out"
+        isSoldOut = counter[i].findChild("div", {"class":"product-card__label product-card__label--sold label label--light"})
+        if isSoldOut is not None:
+            isSO_bool = True
+        else:
+            isSO_bool = False
+     
         
        
        # Checks whether copies are SIGNED or UNSIGNED
-        Text = Pics[i].findChild("img", {"class":"product__img"})
-        
+        Text = Pics[i].findChild("img", {"class":"product-card__img js-img-grid"})
+        if "UNSIGNED" in str(Text):
+            unsignedbool = True
+        else:
+            unsignedbool = False
                
-        if "UNSIGNED" in str(Text):    
-            SignedYN = "UNSIGNED"
-        else: 
-            SignedYN = "SIGNED"
 
         # Determines output of Soldout vs Available. Also informs if copy is SIGNED vs UNSIGNED
         if isSO_bool:
-            print( "A(n) {}".format(SignedYN), "copy of {} is still SOLD OUT...".format(book_title))
-        else:
-            print("A(n) {}".format(SignedYN), "copy of {} is AVAILABLE, RUN!".format(book_title))
+            if unsignedbool:
+                print( "A(n) UNSIGNED copy of {} is still SOLD OUT...".format(book_title))
+            else:
+                print("A(n) SIGNED copy of {} is still SOLD OUT...".format(book_title))
+        else: 
+            if unsignedbool:
+                print("A(n) UNSIGNED copy of {} is AVAILABLE, RUN!".format(book_title))
+            else:
+                print("A(n) SIGNED copy of {} is AVAILABLE, RUN!".format(book_title))
             
 
-# Runs initially to determine whether you only want to run the program once or hourly via popup prompt
+check_articles(url)
+
+""" # Runs initially to determine whether you only want to run the program once or hourly via popup prompt
 ROOT = tk.Tk()
 ROOT.withdraw()
 RunTime = simpledialog.askstring(title = "Runtime calculation", prompt = "Run how many times? (Once/Hrly)" )
@@ -91,4 +106,4 @@ elif RunTime == "Hrly":
             # If no, then it continues.
             time.sleep(3600) # One Hr Sleep Time
             
-            continue
+            continue """
