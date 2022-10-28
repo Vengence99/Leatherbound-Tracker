@@ -75,11 +75,11 @@ RunTime = simpledialog.askstring(title = "Runtime calculation", prompt = "Run ho
 
 
 # Determines if program is run once or hourly depending on input.
-if RunTime == "Once":
+if RunTime.upper() == "ONCE":
 
     check_articles(url)
 
-elif RunTime == "Hrly":
+elif RunTime.upper() == "HRLY":
 
     while go == True:
 
