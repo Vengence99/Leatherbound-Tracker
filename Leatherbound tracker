@@ -90,7 +90,7 @@ elif RunTime.upper() == "HRLY":
         stopq = simpledialog.askstring(title = "Stop Code?", prompt = "Stop? (Y/N)")
 
         # Runs to see if you want to stop the code before continuing
-        if stopq == "Y":
+        if stopq.upper() == "Y":
             
             go = False
             break
