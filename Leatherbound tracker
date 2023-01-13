@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 url = "https://www.dragonsteelbooks.com/collections/leatherbound-books"
 
 
-value = ""
 SignedYN = ""
 go = True
 
