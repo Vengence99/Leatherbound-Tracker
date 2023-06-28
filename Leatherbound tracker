@@ -32,13 +32,13 @@ def check_articles(url):
 
 
         # Retrieves the Book Title
-        title_obj = soup.find_all("h2", {"class": "product-card__title f-family--heading f-caps--true f-space--1"})[i]
+        title_obj = soup.find_all("h3", {"class": "product-card__title f-family--heading f-caps--true f-space--1"})[i]
       
         book_title = title_obj.text
         
 
         # Retrieves Availability.   
-        isSoldOut = counter[i].findChild("div", {"class":"product-card__label product-card__label--sold label label--light"})
+        isSoldOut = counter[i].findChild("p", {"class":"product-card__label-text label__text"})
         if isSoldOut is not None:
             isSO_bool = True
         else:
