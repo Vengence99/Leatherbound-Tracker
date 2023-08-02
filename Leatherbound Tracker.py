@@ -10,7 +10,7 @@ SignedYN = ""
 go = True
 
 
-def check_articles(url):
+def check_articles():
     
     bookavailability = "Leatherbound Availability \n"
 
@@ -66,4 +66,4 @@ def check_articles(url):
 
     return bookavailability
 
-print(check_articles(url))
+print(check_articles())
