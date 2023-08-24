@@ -3,18 +3,16 @@ import requests
 from bs4 import BeautifulSoup
 
 
-url = "https://www.dragonsteelbooks.com/collections/leatherbound-books"
+url = "https://www.dragonsteelbooks.com/collections/leatherbound-books" #URL for the leatherbounds
 
 
-SignedYN = ""
-go = True
+SignedYN = "" #Will be used to get the text for if it's signed or not
 
-
-def check_articles():
+def check_articles(): #defines the command for running the code
     
-    bookavailability = "Leatherbound Availability \n"
+    bookavailability = "Leatherbound Availability \n" #Creates the string for output with the title in place ahead of time
 
-    page = requests.get(url)
+    page = requests.get(url) #Gets the html from the url 
     
 
     # Makes sure that the page will load before extracting HTML from the webpage
@@ -53,17 +51,18 @@ def check_articles():
                
 
         # Determines output of Soldout vs Available. Also informs if copy is SIGNED vs UNSIGNED
-        if isSO_bool:
-            if unsignedbool:
-                bookavailability += "A(n) UNSIGNED copy of {} is still SOLD OUT... \n".format(book_title)
+        # Adds the text of if a book is signed/unsigned available/unavailble to text object.
+        if isSO_bool: #Checks boolean if sold out boolean is true
+            if unsignedbool: #If unsigned:
+                bookavailability += "A(n) UNSIGNED copy of {} is still SOLD OUT... \n".format(book_title) #Marks as unsigned sold out
             else:
-                bookavailability += "A(n) SIGNED copy of {} is still SOLD OUT...\n".format(book_title)
-        else: 
-            if unsignedbool:
-                bookavailability += "A(n) UNSIGNED copy of {} is AVAILABLE, RUN! \n".format(book_title)
+                bookavailability += "A(n) SIGNED copy of {} is still SOLD OUT...\n".format(book_title) #Otherwise marks as signed sold out
+        else: #Else if sold out boolean is false
+            if unsignedbool: #If unsigned:
+                bookavailability += "A(n) UNSIGNED copy of {} is AVAILABLE, RUN! \n".format(book_title) #marks as unsigned available
             else:
-                bookavailability += "A(n) SIGNED copy of {} is AVAILABLE, RUN! \n".format(book_title)
+                bookavailability += "A(n) SIGNED copy of {} is AVAILABLE, RUN! \n".format(book_title) #Otherwised marked as signed available
 
-    return bookavailability
+    return bookavailability #returns the text object created with the list of book availabilities.
 
-print(check_articles())
+print(check_articles()) #calls for the command (def) to run and see if it works properly.
